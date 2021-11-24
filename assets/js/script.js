@@ -49,8 +49,6 @@ var createTaskEl = function(taskDataObj) {
     var listItemEl = document.createElement("li");
     listItemEl.className = "task-item";
 
-    console.log(taskDataObj);
-    console.log(taskDataObj.status);
 
     // add task id as a customer attribute
     listItemEl.setAttribute("data-task-id", taskIdCounter);
@@ -64,6 +62,8 @@ var createTaskEl = function(taskDataObj) {
     taskDataObj.id = taskIdCounter;
 
     tasks.push(taskDataObj);
+
+    saveTasks();
 
     var taskActionsEl = createTaskActions(taskIdCounter);
     listItemEl.appendChild(taskActionsEl);
@@ -122,7 +122,7 @@ var createTaskActions = function(taskId) {
 formEl.addEventListener("submit", taskFormHandler);
 
 var completedEditTask = function(taskName, taskType, taskId) {
-    console.log(taskName, taskType, taskId);
+
 };
 
 ///////////////////////
@@ -140,7 +140,10 @@ var completeEditTask = function(taskName, taskType, taskId) {
             tasks[i].name = taskName;
             tasks[i].type = taskType;
         }
+
     }
+ 
+    saveTasks();
 
     alert("Task Updated!")
 
@@ -181,6 +184,8 @@ var taskButtonHandler = function(event) {
 
         // reassign tasks array to be the same as updatedTaskArr
         tasks = updatedTaskArr;
+
+        saveTasks();
 };
     var editTask = function(taskId) {
         console.log("editing task #" + taskId);
@@ -226,7 +231,13 @@ var taskButtonHandler = function(event) {
             }
             console.log(tasks);
         }
-};
+
+        saveTasks();
+    };
+
+var saveTasks = function() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
 pageContentEl.addEventListener("click", taskButtonHandler);
 pageContentEl.addEventListener("change", taskStatusChangeHandler);
